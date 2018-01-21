@@ -15,7 +15,7 @@
 
 #### SUMMARY STATS FUNCTION STARTS HERE ####
 
-summaryr <- function(x){
+summaryR <- function(x){
   df <- x
   #### MODE FUNCTION STARTS HERE ####
   modeInfo <- function(y) {
