@@ -35,13 +35,20 @@ summaryR <- function(x){
     if(class(x[,i]) == "numeric" | class(x[,i]) == "integer") {
       numCols <- c(names(x[i]),numCols)
     }
-    if(!is.null(factCols)){
+    if(!is.null(factCols) & length(factCols) == 1){
+      fact.df <- data.frame(ColName = x[,factCols])
+      names(fact.df)[1] <- factCols
+    }
+    else if(!is.null(factCols) & length(factCols) > 1){
       fact.df <- x[,factCols]
     }
-    if(!is.null(numCols)){
+    if(!is.null(numCols) & length(numCols) == 1){
+      num.df <- data.frame(numCols = x[,numCols])
+      names(num.df)[1] <- numCols
+    }
+    else if(!is.null(numCols) & length(numCols) > 1){
       num.df <- x[,numCols]
     }
-
   }
 
   #### COLUMN SEGREGATION ENDS HERE
@@ -144,11 +151,32 @@ summaryR <- function(x){
 
  #### STATS FOR FACT COLS BEGINS HERE ####
 
- if(is.null(factCols)){
+ if(is.null(factCols)){ # STATS FOR FACT COLS BEGINS HERE
    fact.df <- NULL
  }
- else if(!is.null(factCols)){
-  for(k in 1:ncol(fact.df)) { # STATS FOR FACT COLS BEGINS HERE
+  else if(ncol(fact.df) == 1) {
+    `NA's` <- length(which(is.na(fact.df[1]) == T))
+    Mode <- modeInfo(fact.df[[1]])
+    `Levels` <- length(unique(fact.df[[1]]))
+    factStat.df <- data.frame(Variable = names(fact.df[1]),
+                                Class = class(fact.df[[1]]),
+                                Count = nrow(fact.df),
+                                `Levels` = `Levels`,
+                                `NA's`=`NA's`,
+                                `Min` = NA,
+                                `Max` = NA,
+                                `Mean` = NA,
+                                `Median` = NA,
+                                `Mode` = `Mode`,
+                                `SD` = NA,
+                                `Variance` = NA,
+                                `Percentile.25` = NA,
+                                `Percentile.75` = NA,
+                                `IQR` = NA,
+                                Possible.Outliers = NA)
+  }
+ else if(ncol(fact.df) > 1){
+  for(k in 1:ncol(fact.df)) {
     `NA's` <- length(which(is.na(fact.df[k]) == T))
     Mode <- modeInfo(fact.df[[k]])
     `Levels` <- length(unique(fact.df[[k]]))
