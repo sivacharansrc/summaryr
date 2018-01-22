@@ -11,6 +11,10 @@
 #'
 #'@param x a data frame, or a vector of numeric, character, date etc.
 #'@return A data frame with the summary statistics
+#'@import stats
+#'@export "summaryR"
+
+
 
 #### SUMMARY STATS FUNCTION STARTS HERE ####
 
