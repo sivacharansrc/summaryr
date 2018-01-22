@@ -22,9 +22,9 @@ summaryR <- function(x){
   df <- x
   options(scipen = 999)
   #### MODE FUNCTION STARTS HERE ####
-  modeInfo <- function(y) {
-    modeData <- unique(y)
-    modeData[which.max(tabulate(match(y, modeData)))]
+  modeInfo <- function(y){
+    modeTbl <- table(y)
+    names(modeTbl[which.max(modeTbl)])
   }
 
   ##### SEGREGATING FACT / CHR COLUMNS AND NUM / INT COLUMNS #####
