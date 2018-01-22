@@ -17,6 +17,7 @@
 
 summaryR <- function(x){
   df <- x
+  options(scipen = 999)
   #### MODE FUNCTION STARTS HERE ####
   modeInfo <- function(y) {
     modeData <- unique(y)
@@ -27,13 +28,22 @@ summaryR <- function(x){
 
   factCols <- NULL
   numCols <- NULL
+  dateCols <- NULL
+  logiCols <- NULL
+
   for (i in 1:ncol(x)) {
 
     if(class(x[,i]) == "factor" | class(x[,i]) == "character"){
       factCols <- c(names(x[i]),factCols)
     }
-    if(class(x[,i]) == "numeric" | class(x[,i]) == "integer") {
+    if(class(x[,i]) %in% c("numeric","integer")) {
       numCols <- c(names(x[i]),numCols)
+    }
+    if(class(x[,i]) %in% c("Date", "POSIXct")){
+      dateCols <- c(names(x[i]),dateCols)
+    }
+    if(class(x[,i]) == "logical"){
+      logiCols <- c(names(x[i]),logiCols)
     }
     if(!is.null(factCols) & length(factCols) == 1){
       fact.df <- data.frame(ColName = x[,factCols])
@@ -49,6 +59,20 @@ summaryR <- function(x){
     else if(!is.null(numCols) & length(numCols) > 1){
       num.df <- x[,numCols]
     }
+    if(!is.null(dateCols) & length(dateCols) == 1){
+      date.df <- data.frame(ColName = x[,dateCols])
+      names(date.df)[1] <- dateCols
+    }
+    else if(!is.null(dateCols) & length(dateCols) > 1){
+      date.df <- x[,dateCols]
+    }
+    if(!is.null(logiCols) & length(logiCols) == 1){
+      logi.df <- data.frame(logiCols = x[,logiCols])
+      names(logi.df)[1] <- logiCols
+    }
+    else if(!is.null(logiCols) & length(logiCols) > 1){
+      logi.df <- x[,logiCols]
+    }
   }
 
   #### COLUMN SEGREGATION ENDS HERE
@@ -57,6 +81,7 @@ summaryR <- function(x){
 
   if(is.null(numCols)) {
     num.df <- NULL
+    numStat.df <- NULL
   }
   else if(ncol(num.df) == 1){
     Variable <- names(num.df[1])
@@ -145,14 +170,15 @@ summaryR <- function(x){
                                  Possible.Outliers = length(Possible.Outliers))
         numStat.df <- rbind(numStat.df,numStat1)
         }
-     } # STATS FOR NUM COLS ENDS HERE
+     }
 
-  }
+  }# STATS FOR NUM COLS ENDS HERE
 
  #### STATS FOR FACT COLS BEGINS HERE ####
 
  if(is.null(factCols)){ # STATS FOR FACT COLS BEGINS HERE
    fact.df <- NULL
+   factStat.df <- NULL
  }
   else if(ncol(fact.df) == 1) {
     `NA's` <- length(which(is.na(fact.df[1]) == T))
@@ -223,20 +249,121 @@ summaryR <- function(x){
   } # STATS FOR FACT COLS ENDS HERE
  }
 
- if(!is.null(numCols) & !is.null(factCols)) {
-   summaryStats.df <- rbind(numStat.df, factStat.df)
-   #summaryStats.df <- summaryStats.df[match(names(df), summaryStats.df$Variable),]
-   row.names(summaryStats.df) <- NULL
-   return(summaryStats.df)
- }
- else if(is.null(numCols) & !is.null(factCols)){
-   row.names(factStat.df) <- NULL
-   return(factStat.df)
- }
- else if(!is.null(numCols) & is.null(factCols)) {
-   row.names(numStat.df) <- NULL
-   return(numStat.df)
- }
+  #### STATS FOR DATE COLS BEGINS HERE ####
 
+  if(is.null(dateCols)) {
+    date.df <- NULL
+    dateStat.df <- NULL
+  }
+  else if(ncol(date.df) == 1){
+    Variable <- names(date.df[1])
+    `NA's` <- length(which(is.na(date.df[[1]]) == T))
+    `Min` <- round(min(date.df[[1]], na.rm = T),2)
+    `Max` <- round(max(date.df[[1]], na.rm = T),2)
+    `Mean` <- NA
+    `Median` <- NA
+    `Mode` <- modeInfo(date.df[[1]])
+    `SD` <- NA
+    `Variance` <- NA
+    `Percentile.25` <- NA
+    `Percentile.75` <- NA
+    `IQR` <- NA
+    Possible.Outliers <- NA
+
+    dateStat.df <- data.frame(Variable = Variable,
+                             Class = class(date.df[[1]]),
+                             Count = nrow(date.df),
+                             `Levels` = NA,
+                             `NA's`=`NA's`,
+                             `Min` = `Min`,
+                             `Max` = `Max`,
+                             `Mean` = `Mean`,
+                             `Median` = `Median`,
+                             `Mode` = `Mode`,
+                             `SD` = `SD`,
+                             `Variance` = `Variance`,
+                             `Percentile.25` = `Percentile.25`,
+                             `Percentile.75` = `Percentile.75`,
+                             `IQR` = `IQR`,
+                             Possible.Outliers = NA)
+  }
+  else if(ncol(date.df > 1)){
+
+    for(j in 1:ncol(date.df)) {
+
+      Variable <- names(date.df[j])
+      `NA's` <- length(which(is.na(date.df[[j]]) == T))
+      `Min` <- round(min(date.df[[j]], na.rm = T),2)
+      `Max` <- round(max(date.df[[j]], na.rm = T),2)
+      `Mean` <- NA
+      `Median` <- NA
+      `Mode` <- modeInfo(date.df[[j]])
+      `SD` <- NA
+      `Variance` <- NA
+      `Percentile.25` <- NA
+      `Percentile.75` <- NA
+      `IQR` <- NA
+      Possible.Outliers <- NA
+      if(j == 1){
+        dateStat.df <- data.frame(Variable = Variable,
+                                 Class = class(date.df[[j]]),
+                                 Count = nrow(date.df),
+                                 `Levels` = NA,
+                                 `NA's`=`NA's`,
+                                 `Min` = `Min`,
+                                 `Max` = `Max`,
+                                 `Mean` = `Mean`,
+                                 `Median` = `Median`,
+                                 `Mode` = `Mode`,
+                                 `SD` = `SD`,
+                                 `Variance` = `Variance`,
+                                 `Percentile.25` = `Percentile.25`,
+                                 `Percentile.75` = `Percentile.75`,
+                                 `IQR` = `IQR`,
+                                 Possible.Outliers = NA)
+      }
+      if(j>1){
+        dateStat1.df <- dateStat.df
+        dateStat.df <- data.frame(Variable = Variable,
+                                 Class = class(date.df[[j]]),
+                                 Count = nrow(date.df),
+                                 `Levels` = NA,
+                                 `NA's`=`NA's`,
+                                 `Min` = `Min`,
+                                 `Max` = `Max`,
+                                 `Mean` = `Mean`,
+                                 `Median` = `Median`,
+                                 `Mode` = `Mode`,
+                                 `SD` = `SD`,
+                                 `Variance` = `Variance`,
+                                 `Percentile.25` = `Percentile.25`,
+                                 `Percentile.75` = `Percentile.75`,
+                                 `IQR` = `IQR`,
+                                 Possible.Outliers = NA)
+        dateStat.df <- rbind(dateStat.df,dateStat1.df)
+      }
+    }
+
+  }# STATS FOR DATE COLS ENDS HERE
+
+  if(!is.null(numStat.df)){
+    numStat.df <- data.frame(lapply(numStat.df ,as.character), stringsAsFactors = F)
+    numStat.df[is.na(numStat.df)] <- "-"
+  }
+  if(!is.null(factStat.df)){
+    factStat.df <- data.frame(lapply(factStat.df ,as.character), stringsAsFactors = F)
+    factStat.df[is.na(factStat.df)] <- "-"
+  }
+  if(!is.null(dateStat.df)){
+    dateStat.df <- data.frame(lapply(dateStat.df ,as.character), stringsAsFactors = F)
+    dateStat.df[is.na(dateStat.df)] <- "-"
+  }
+  summaryStats.df <- rbind(numStat.df, factStat.df, dateStat.df)
+  allStatCols <- c(numCols, dateCols, factCols)
+  dfCols <- names(df)
+  filteredCols <- dfCols[which(dfCols %in% allStatCols)]
+  summaryStats.df <- summaryStats.df[match(filteredCols, summaryStats.df$Variable),]
+  row.names(summaryStats.df) <- NULL
+  return(summaryStats.df)
 
 } # SUMMARY STATS FUNCTION ENDS HERE
