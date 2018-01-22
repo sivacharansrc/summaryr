@@ -7,19 +7,18 @@
 summaryR(x)
 }
 \arguments{
-\item{x}{a data frame}
+\item{x}{a data frame, or a vector of numeric, character, date etc.}
 }
 \value{
 A data frame with the summary statistics
 }
 \description{
-This function takes a data frame, and assumes the first row to be the header.
-The function then segregates the data in to two data frames, one containing all
-numberic / integer columns, and the other containing all character / factor
-columns, and then runs statitics for each of the data frames seperately. For
-the numeric columns, statistics such the total row count, number of NA's, min,
-max, mean, median, mode, standard deviation, variance, 1st Quadrant (25th percentile),
-3rd Quadrant (75th percentile), IQR, Possible Outliers in the column vector are calculated.
-For factor or character columns, the total count, count of NA's, column class, Mode, levels are
-calculated. The output data is generated in the form of a data frame
+The function is an extension of the R "summary" function in base package. This function takes a data frame
+or a vector as input, and then segregates the data in to several data frames based on the data type
+(i.e. numeric, integer, factor, character, date, POSIXct) and then runs statitics for each of the data frames
+seperately. The function calculates general descriptive statistics such as total row count, number of NA's,
+min, max, mean, median, mode, standard deviation, variance, 1st Quadrant (25th percentile),
+3rd Quadrant (75th percentile), IQR, Possible Outliers. Applicable statistical measures are calculated for
+each of the data types in the data frame, and then finally aggregated in to a data frame which is returned
+as an output of the function
 }

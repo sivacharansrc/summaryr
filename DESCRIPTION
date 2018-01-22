@@ -2,7 +2,7 @@ Package: summaryR
 Type: Package
 Title: Descriptive Statistics Summary
 Version: 0.1.0
-Author: person("Siva", "Chandrasekar", email = "", role = c("aut", "cre"))
+Author: person("Siva", "Chandrasekar", email = "sivacharansrc@gmail.com", role = c("aut", "cre"))
 Description: This package provides the descriptive summary statistics for columns in a data frame. Some the general summary statistics include the mean, median, mode, standard deviation, possibility of any outliers etc.
 License: UNLIMITED
 Encoding: UTF-8
