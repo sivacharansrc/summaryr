@@ -35,10 +35,31 @@ summaryR(b)
 
 ## Example with date vector
 
-x <- c(as.Date("2012-12-01"), as.Date("1996-04-21"),as.Date("1987-03-22"),as.Date("1995-01-13"),as.Date("1900-08-09"))
+x <- c(as.Date("2012-12-01"), as.Date("1996-04-21"),as.Date("1987-03-22"),
+as.Date("1995-01-13"),as.Date("1900-08-09"))
 summaryR(x)
 
 ## Example with data frame
+
+df <- data.frame(Name = c("Rob", "Michelle", "Siva", "Rob", "Prasath"),
+Age = c(25,54,12,67,182),
+DOB = c(as.Date("1993-12-01"), as.Date("1964-12-01"), as.Date("2006-05-28"),
+       NA, as.Date("2000-05-28")),
+TestScore = c(72,82.5,NA,79.86,86),
+Residence = as.factor(c(NA,NA,NA, "USA", "India")), stringsAsFactors = FALSE)
+
+summaryR(df)
+
+## Transposing the summaryR data frame can give better readability when working with large data sets
+t(summaryR(df))
+
+## Note that the output from summaryR is compactible with View()
+
+## Example for usage with column in the data set
+
+summaryR(df$TestScore)
+
+
 }
 \author{
 Siva Chandrasekar
