@@ -7,7 +7,7 @@
 summaryR(x)
 }
 \arguments{
-\item{x}{a data frame, or a vector of numeric, character, date etc.}
+\item{x}{A data frame, or a vector of numeric, character, date etc.}
 }
 \value{
 A data frame with the summary statistics
@@ -21,4 +21,25 @@ min, max, mean, median, mode, standard deviation, variance, 1st Quadrant (25th p
 3rd Quadrant (75th percentile), IQR, Possible Outliers. Applicable statistical measures are calculated for
 each of the data types in the data frame, and then finally aggregated in to a data frame which is returned
 as an output of the function
+}
+\examples{
+
+## Example with numeric vector
+a <- c(1,2,3,6,7,89)
+summaryR(a)
+
+## Example with factor / character vector
+b <- as.factor(c("Rob", "Lacy", "Rob", "Sekar", "Thomas"))
+b <- c("Rob", "Lacy", "Rob", "Prasath", "Chandrasekar")
+summaryR(b)
+
+## Example with date vector
+
+x <- c(as.Date("2012-12-01"), as.Date("1996-04-21"),as.Date("1987-03-22"),as.Date("1995-01-13"),as.Date("1900-08-09"))
+summaryR(x)
+
+## Example with data frame
+}
+\author{
+Siva Chandrasekar
 }

@@ -9,8 +9,26 @@
 #' each of the data types in the data frame, and then finally aggregated in to a data frame which is returned
 #' as an output of the function
 #'
-#'@param x a data frame, or a vector of numeric, character, date etc.
+#'@param x A data frame, or a vector of numeric, character, date etc.
 #'@return A data frame with the summary statistics
+#'@author Siva Chandrasekar
+#'@examples
+#'
+#'## Example with numeric vector
+#'a <- c(1,2,3,6,7,89)
+#'summaryR(a)
+#'
+#'## Example with factor / character vector
+#'b <- as.factor(c("Rob", "Lacy", "Rob", "Sekar", "Thomas"))
+#'b <- c("Rob", "Lacy", "Rob", "Prasath", "Chandrasekar")
+#'summaryR(b)
+#'
+#'## Example with date vector
+#'
+#'x <- c(as.Date("2012-12-01"), as.Date("1996-04-21"),as.Date("1987-03-22"),as.Date("1995-01-13"),as.Date("1900-08-09"))
+#'summaryR(x)
+#'
+#'## Example with data frame
 #'@import stats
 #'@export "summaryR"
 

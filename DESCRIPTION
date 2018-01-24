@@ -7,5 +7,5 @@ Maintainer: Siva Chandrasekar <sivacharansrc@gmail.com>
 Description: Provides the descriptive summary statistics for columns in a data frame. Some of the general summary statistics include the mean, median, mode, standard deviation, possibility of any outliers etc.
 License: MIT + file LICENSE
 Encoding: UTF-8
-Depends: R (>= 3.3.2)
+Depends: R (>= 3.3.0)
 RoxygenNote: 6.0.1
